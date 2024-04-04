@@ -2,11 +2,13 @@ from flask import request, jsonify
 from config import app, db
 from models import Contacts
 
+
 @app.route("/contacts", methods=["GET"])
 def get_contacts():
     contacts = Contacts.query.all()
     json_contacts = list(map(lambda x: x.to_json(), contacts))
     return jsonify({"contacts": json_contacts})
+
 
 @app.route("/create_contact", methods=["POST"])
 def create_contact():
@@ -27,6 +29,7 @@ def create_contact():
     except Exception as e:
         return jsonify({"message": str(e)}), 400
     return jsonify({"message": "User created!"}), 201
+
 
 
 @app.route("/update_contact/<int:user_id>", methods = ["PATCH"])
@@ -64,9 +67,3 @@ if __name__ == "__main__":
         db.create_all()
 
     app.run(debug=True)
-
-
-# create
-# - first_name
-# - last_name
-# - email
