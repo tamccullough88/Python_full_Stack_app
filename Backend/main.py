@@ -1,11 +1,11 @@
 from flask import request, jsonify
 from config import app, db
-from models import Contacts
+from models import Contact
 
 
 @app.route("/contacts", methods=["GET"])
 def get_contacts():
-    contacts = Contacts.query.all()
+    contacts = Contact.query.all()
     json_contacts = list(map(lambda x: x.to_json(), contacts))
     return jsonify({"contacts": json_contacts})
 
@@ -22,10 +22,10 @@ def create_contact():
             400,
         )
     
-    new_contact = Contacts(first_name=first_name, last_name=last_name, email=email)
+    new_contact = Contact(first_name=first_name, last_name=last_name, email=email)
     try: 
         db.session.add(new_contact)
-        db.sessio.commit()
+        db.session.commit()
     except Exception as e:
         return jsonify({"message": str(e)}), 400
     return jsonify({"message": "User created!"}), 201
@@ -34,9 +34,9 @@ def create_contact():
 
 @app.route("/update_contact/<int:user_id>", methods = ["PATCH"])
 def update_contact(user_id):
-    contact = Contacts.query.get(user_id)
+    contact = Contact.query.get(user_id)
 
-    if not Contacts:
+    if not Contact:
         return jsonify({"message": "User not found"}), 404
     
     data = request.json
@@ -51,9 +51,9 @@ def update_contact(user_id):
 
 @app.route("/delete_contact/<int:user_id>", methods=["DELETE"])
 def delete_contact(user_id):
-    contact = Contacts.query.get(user_id)
+    contact = Contact.query.get(user_id)
 
-    if not Contacts:
+    if not Contact:
         return jsonify({"message": "User not found"}), 404
     
     db.session.delete(contact)

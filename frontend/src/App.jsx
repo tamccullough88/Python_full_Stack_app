@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import ContactList from './contactList'
+import ContactForm from './ContactForm'
 
 import './App.css'
 
@@ -23,6 +24,7 @@ function App() {
   return (
     <>
       <ContactList contacts={contacts} />
+      <ContactForm />
     </>
   )
 }
